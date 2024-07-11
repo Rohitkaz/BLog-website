@@ -1,23 +1,48 @@
 import express from "express";
-const Auth = express.Router();
-import jwt from "jsonwebtoken";
+//const Sendblog = express.Router();
 
+import jwt from "jsonwebtoken";
+import verifyJWT from "./verifyJWT.js";
 import cookieParser from "cookie-parser";
 
 import connect from "./db.js";
 import users from "../models/users.js";
 import bcrypt from "bcrypt";
-
+import posts from "../models/post.js";
 import dotenv from "dotenv";
 
-const verifyJWT = (req, res, next) => {
-  console.log(req.cookies.refreshToken);
+/*Sendblog.get("", async (req, res) => {
+  const post = await posts.find({});
+  res.status(200).send(post);
+});
+*/
+const verifycookie = (req, res, next) => {
+  console.log("Hello");
   const accessToken = req.cookies.jwt;
 
-  if (!accessToken && !req.cookies.refreshToken)
-    return res.status(401).json("No token");
+  if (!accessToken && !req.cookies.refreshToken) {
+    if (!req.cookies.userIdentifier) {
+      const viewedblogs = [];
 
-  if (!accessToken) {
+      req.viewedblogs = viewedblogs;
+      return next();
+    } else {
+      console.log("Hola");
+      const userIdentifier = req.cookies.userIdentifier;
+      jwt.verify(
+        userIdentifier,
+        process.env.ACCESS_TOKEN_SECRET,
+        (err, decoded) => {
+          if (err) {
+            return res.status(400).json("invalid user");
+          }
+          console.log(decoded);
+          req.viewedblogs = decoded;
+        }
+      );
+      return next();
+    }
+  } else if (!accessToken) {
     jwt.verify(
       req.cookies.refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
@@ -53,6 +78,7 @@ const verifyJWT = (req, res, next) => {
           httpOnly: true,
         });
         req.user = user;
+
         console.log("refreshToken");
         return next(); // Use 'return' here to exit the callback
       }
@@ -63,9 +89,17 @@ const verifyJWT = (req, res, next) => {
         return res.status(400).json("invalid user");
       }
       req.user = decoded;
-
       return next(); // Use 'return' here to exit the callback
     });
   }
 };
-export default verifyJWT;
+/*Sendblog.get("/:id", async (req, res) => {
+  console.log(req.user);
+  console.log(req.viewedblogs);
+  const blog = await posts.findOne({ _id: req.params.id });
+
+  res.status(200).send(blog);
+});*/
+export default verifycookie;
+
+//export default ;//

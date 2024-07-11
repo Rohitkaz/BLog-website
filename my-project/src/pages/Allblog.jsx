@@ -6,7 +6,7 @@ import { Link, Outlet, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import BlogCard from "./BlogCard";
 import Header from "./Header";
-const Home = () => {
+const Allblog = () => {
   const post = useLoaderData();
 
   return (
@@ -22,4 +22,4 @@ const Home = () => {
     </>
   );
 };
-export default Home;
+export default Allblog;
