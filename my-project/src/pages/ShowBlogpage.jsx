@@ -98,7 +98,7 @@ const ShowBlogPage = () => {
           </div>
         </div>
         <img
-          src={`/images/${blog.image}`}
+          src={`http://localhost:8000/images/${blog.image}`}
           className="w-[96%] h-[50%] ml-[2%] rounded-md "
         ></img>
         <div className="flex flex-col w-[100%] h- font-heading">

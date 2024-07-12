@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 import contentschema from "./models/contentschema.js";
 import verifyJWT from "./middlewares/verifyJWT.js";
-import verifycookie from "./middlewares/verifycookie.js";
+import verifycookie from "./middlewares/Verifycookie.js";
 import Engagement from "./models/Bloglikesandviews.js";
 
 //app.use("/", router);
@@ -28,11 +28,12 @@ app.use(
     credentials: true,
   })
 );
+app.use("/images", express.static("uploads"));
 app.use("/Auth", Auth);
 //app.use("/blog", Sendblog);
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../my-project/public/images/");
+    cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now();
@@ -141,6 +142,9 @@ app.get("/blog/:id", async (req, res) => {
 });
 
 app.use(verifyJWT);
+app.get("/isauthenticated", async (req, res) => {
+  if (req.user) return res.status(200).send("hi");
+});
 app.get("/like/:id", async (req, res) => {
   console.log("like");
   const user = await Engagement.findOne({

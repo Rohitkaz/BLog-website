@@ -47,7 +47,7 @@ const Dashboard = () => {
         <div className=" ml-[2%]  fond-heading font-bold text-2xl flex items-center">
           Latest comments
         </div>
-        <div className="w-[96%] md:w-[40%] border-2 border-grey h-[70%] ml-[2%]  position-fixed overflow-y-scroll scrollbar-thin gap-[2%] ">
+        <div className="w-[96%] md:w-[40%] border-2 border-grey h-[70%] md:ml-[2%] ml-[1%] position-fixed overflow-y-scroll scrollbar-thin gap-[2%] ">
           {data.length > 0 ? (
             <>
               {data.map((comment, index) => (
@@ -57,9 +57,12 @@ const Dashboard = () => {
                     <div className="font-heading">{comment.content}</div>
                   </div>
                   <div className="w-[20%]  h-[100%] flex items-center justify-center ">
-                    <button className="w-[50%] md:w-[50%]  border-2 border-grey rounded-md bg-blue-700 text-white">
-                      view
-                    </button>
+                    <Link
+                      to={`/Blog/${comment.postId}`}
+                      className="w-[50%] md:w-[50%] text-center  border-2 border-grey rounded-md bg-blue-700 text-white"
+                    >
+                      View
+                    </Link>
                   </div>
                 </div>
               ))}

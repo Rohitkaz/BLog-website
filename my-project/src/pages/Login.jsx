@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import Header from "./Header";
 import { Link, redirect } from "react-router-dom";
 import { useState } from "react";
@@ -8,7 +8,9 @@ import axios from "axios";
 const Login = () => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
+  const [isLoggedin, setIsLoggedin] = useState(false);
   const navigate = useNavigate();
+
   const login = async () => {
     console.log(name);
     const result = await axios.post(
@@ -20,7 +22,10 @@ const Login = () => {
     );
     console.log(result.status);
     if (result.status == 404) navigate("/register");
-    if (result.status == 200) navigate("/Dashboard");
+    if (result.status == 200) {
+      setIsLoggedin(true);
+      navigate("/Dashboard");
+    }
   };
   return (
     <>
