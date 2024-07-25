@@ -15,17 +15,22 @@ const Commentcard = ({ comment, index, change }) => {
   const [showreplyindex, setShowreplyindex] = useState();
   const [replies, setReplies] = useState([]);
   const sendReply = async (e) => {
+    if (!reply) {
+      return alert("reply cannot be empty");
+    }
     const comm = {
       blog_id: comment.postId,
       commentid: e.target.id,
       commreply: reply,
+      parentUsername: comment.username,
     };
     console.log(comment.postId);
     try {
       const res = await axios.post(`http://localhost:8000/reply`, comm, {
         withCredentials: true,
       });
-      change(res.data);
+
+      change(res.data, comment.parentId, index);
     } catch (err) {
       console.log(err.message);
     }
@@ -50,11 +55,14 @@ const Commentcard = ({ comment, index, change }) => {
     }
   };
   return (
-    <div className="flex flex-col items-center w-[100%] h-[90%] gap-2   ">
+    <div className="flex flex-col items-center w-[100%] h-[90%] gap-1   ">
       <div className="flex flex-row w-[87%] gap-2">
         <img className="w-[30px] h-[30px]" src="./images/user.png"></img>
-        <div className="w-[90% ] h-[10%] flex-col font-heading text-sm font-bold">
+        <div className="flex flex-row w-[90% ] h-[10%]  font-heading text-sm font-bold gap-2">
           <div>{comment.username}</div>
+          {comment.parentUsername ? (
+            <div className="text-blue-700">@{comment.parentUsername}</div>
+          ) : null}
         </div>
       </div>
       <div className="  font-heading w-[87%]  border-2 border-gray-500 rounded-md mt-2">
@@ -67,11 +75,11 @@ const Commentcard = ({ comment, index, change }) => {
         >
           Like({clikes})
         </button>
-        <div className=" flex md:w-[20%] w-[30%] bg-blue-700 flex-row justify-center items-center border-2  ">
+        <div className=" flex md:w-[20%] w-[40%] bg-blue-700 flex-row justify-center items-center border-2  ">
           <label className="text-white hover:text-green-600">Reply</label>
           {isTrue ? (
             <IoIosArrowUp
-              className="   items-center"
+              className="  w-[30%]  items-center"
               onClick={() => {
                 setIsTrue(false);
                 setReplyindex(-1);
@@ -80,7 +88,7 @@ const Commentcard = ({ comment, index, change }) => {
           ) : (
             <FaAngleDown
               id="up"
-              className="   items-center"
+              className=" w-[30%]  items-center"
               onClick={() => {
                 setIsTrue(true);
                 setReplyindex(index);

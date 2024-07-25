@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-const BlogCard = ({ blogdata, slideindex, index }) => {
+const NewBlogCard = ({ blogdata }) => {
   const defaultimg = (e) => {
     e.target.src = "./images/noimage.png";
   };
   return (
     <div
-      className={` flex  flex-col gap-1 w-[100%]  border-2 shadow-lg shadow-gray-400 h-[100%]  bg-orange-300  rounded-lg rounded-t-lg z-7 ${
-        slideindex === index ? null : "hidden"
-      }`}
+      className={` flex  flex-col gap-1 w-[100%]  border-2  shadow-gray-400  shadow-lg h-[100%]  bg-orange-300  rounded-lg rounded-t-lg z-7 
+       `}
     >
       <img
         src={`http://localhost:8000/images/${blogdata.image}`}
         onError={defaultimg}
         className="w-[100%] h-[60%] rounded-t-lg "
       ></img>
-      <div className=" ml-[4%] flex w-[100%] h-[15%] text-center font-heading font-bold text-xl md:text-2xl  ">
+      <div
+        to={`/Blog/${blogdata._id}`}
+        className=" ml-[4%] flex w-[100%] h-[15%] text-center font-heading font-bold text-xl md:text-2xl  "
+      >
         {blogdata.maintitle}
       </div>
       <div
@@ -24,13 +26,11 @@ const BlogCard = ({ blogdata, slideindex, index }) => {
       >
         {blogdata.description}
       </div>
-
       <div className=" sticky flex  flex-row w-[100%] h-[13%] font-heading font-semibold text-center mt-2 gap-2 ">
         <img
-          className="h-[100%] w-[10%]  rounded-[47%] object-cover ml-2 "
+          className="h-[100%] w-[20%]  rounded-[47%] object-cover ml-2 "
           src="images/user.png"
         ></img>
-
         <div className=" flex flex-col h-[100%] text-center   pt-1 ">
           <div className=" flex  h-[100%] text-center   ">
             {" "}
@@ -41,11 +41,8 @@ const BlogCard = ({ blogdata, slideindex, index }) => {
             {blogdata.createdAt}{" "}
           </div>
         </div>
-        <div className=" md:ml-[50%] ml-[30%] hover:-translate-x-1 transition-all duration-75 ease-in-out z-5 shadow-md flex items-center bg-slate-50   rounded-lg h-[70%] flex-row border-2  border-white">
-          <Link
-            to={`/Blog/${blogdata._id}`}
-            className="  hover:text-cyan-700  "
-          >
+        <div className=" ml-[20%] z-5 shadow-md flex items-center bg-slate-50   rounded-lg h-[70%] flex-row border-2  border-white">
+          <Link to={`/Blog/${blogdata._id}`} className=" hover:text-cyan-700  ">
             Read More
           </Link>
         </div>
@@ -53,4 +50,4 @@ const BlogCard = ({ blogdata, slideindex, index }) => {
     </div>
   );
 };
-export default BlogCard;
+export default NewBlogCard;

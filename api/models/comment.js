@@ -7,9 +7,10 @@ const CommentSchema = new mongoose.Schema({
   username: { type: String, required: true },
   content: { type: String, required: true },
   parentId: { type: String, default: null },
+  parentUsername: { type: String, default: null },
   likedby: { type: Array },
   likes: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: String },
   updatedAt: { type: Date, default: Date.now },
 });
 

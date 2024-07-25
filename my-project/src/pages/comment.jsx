@@ -6,18 +6,29 @@ import Header from "./Header";
 import { IoIosArrowUp } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
 import Commentcard from "./commentcard";
+import { useAuthcontext } from "./context";
 const CommentBar = ({ blogid, blogauthor, change }) => {
   const [comment, setComment] = useState();
-
+  const context = useAuthcontext();
   const [comments, setComments] = useState([]);
   const [replies, setReplies] = useState([]);
   const [showreplies, setShowreplies] = useState(false);
   const [showreplyindex, setShowreplyindex] = useState();
-  const changereplies = (comment) => {
+  const changereplies = (comment, parentId, index) => {
     console.log(comment);
     setReplies((prev) => [...prev, comment]);
+    if (parentId == null) {
+      setShowreplies(true);
+      setShowreplyindex(index);
+    }
   };
   const sendComment = async () => {
+    if (!context.user) {
+      return alert("First Login to send comments");
+    }
+    if (!comment) {
+      return alert("Comment cannot be empty");
+    }
     console.log(blogauthor);
     const comm = {
       blog_id: blogid,
@@ -49,7 +60,7 @@ const CommentBar = ({ blogid, blogauthor, change }) => {
     setComments(comm);
   };
   return (
-    <div className="flex flex-col w-[100%] border-2 items-center gap-1 border-none h-dvh overflow-y-scroll scrollbar-thin">
+    <div className="flex flex-col w-[100%] border-2 items-center gap-1 border-none h-dvh ">
       <div className="w-[100%] h-[5%]"></div>
       <textarea
         Name={comment}
@@ -63,17 +74,17 @@ const CommentBar = ({ blogid, blogauthor, change }) => {
       ></textarea>
       <button
         onClick={sendComment}
-        className="font-heading w-[87%] rounded-lg text-white bg-blue-700 h-[30px]"
+        className="font-heading w-[87%] rounded-lg text-white bg-blue-700 hover:text-black h-[30px]"
       >
         Send
       </button>
       <button
         onClick={showcomments}
-        className="font-heading w-[87%] rounded-lg text-white bg-blue-700 h-[30px]"
+        className="font-heading w-[87%] rounded-lg text-white bg-blue-700 hover:text-black h-[30px]"
       >
         Showcomments
       </button>
-      <div className="flex flex-col w-[100%] h-[80%]  items-center gap-1 mt-2  ">
+      <div className="flex flex-col w-[100%] h-[80%]  items-center gap-1 mt-2 overflow-y-scroll scrollbar-thin  ">
         {comments.map((comment, index) => (
           <>
             <div className="flex flex-col w-[87%]  items-center  mt-2 border-2 border-red">

@@ -7,6 +7,7 @@ import { AiTwotoneLike } from "react-icons/ai";
 import CommentBar from "./comment";
 import { IoEyeOutline } from "react-icons/io5";
 import { LiaCommentSolid } from "react-icons/lia";
+import { useAuthcontext } from "./context";
 const ShowBlogPage = () => {
   const blogdata = useLoaderData();
   const blog = blogdata.blog;
@@ -14,18 +15,20 @@ const ShowBlogPage = () => {
   const [comments, setComments] = useState(blog.comments);
   const [showcommentbar, setShowcommentbar] = useState(false);
   const [isLiked, setisLiked] = useState(userlike);
-
+  const context = useAuthcontext();
   console.log(isLiked);
 
   const [likes, setLikes] = useState(blog.likes);
-  const date = new Date(blog.createdAt).toDateString();
-  blog.createdAt = date;
+
   const Comms = () => {
     console.log("hillos");
     setComments((prev) => prev + 1);
   };
   const likeBlog = async () => {
     //  console.log(isLiked);
+    if (!context.user) {
+      return alert("Login to like blogs");
+    }
     if (isLiked == false) {
       console.log("hi");
 
@@ -64,12 +67,13 @@ const ShowBlogPage = () => {
     setShowcommentbar(false);
   };
   console.log(blog.content);
+
   return (
-    <div className=" flex flex-row     w-[100%]  ">
+    <div className=" flex flex-row   justify-center    w-[100%]  ">
       <div
-        className={`flex flex-col w-[70%] ${
+        className={`flex  flex-col  md:w-[70%] w-[77%] ${
           showcommentbar ? "blur-sm fixed" : "blur-none absolute"
-        }   gap-2 border-2 ml-[15%]`}
+        }   gap-2 border-2 `}
       >
         <div className="flex justify-center font-heading font-bold text-4xl">
           {blog.maintitle}
@@ -99,7 +103,7 @@ const ShowBlogPage = () => {
         </div>
         <img
           src={`http://localhost:8000/images/${blog.image}`}
-          className="w-[96%] h-[50%] ml-[2%] rounded-md "
+          className="w-[96%] h-[50%] md:h-[500px] ml-[2%] rounded-md "
         ></img>
         <div className="flex flex-col w-[100%] h- font-heading">
           {blog.content.map((para, ind) => (
@@ -122,14 +126,14 @@ const ShowBlogPage = () => {
         </button>
       </div>
       <div
-        className={` w-[65%]  md:w-[40%] ml-[35%] md:ml-[60%] z-10 border-2 ${
+        className={` w-[65%]  md:w-[40%] ml-[35%] md:ml-[60%]  z-10 border-2 ${
           showcommentbar ? "border-red-600" : "border-none"
         } fixed `}
       >
         {showcommentbar ? (
           <div>
             <MdClose
-              className="  h-[5%] w-[5%] ml-[90%]"
+              className=" h-[10%] w-[10%] md:h-[5%]  md:w-[5%] ml-[90%]"
               onClick={closecommbar}
             />
             <CommentBar

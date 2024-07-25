@@ -4,27 +4,29 @@ import { Link, redirect } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuthcontext } from "./context";
 
 const Login = () => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
-  const [isLoggedin, setIsLoggedin] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const context = useAuthcontext();
   const login = async () => {
     console.log(name);
-    const result = await axios.post(
-      "http://localhost:8000/Auth/login",
-      { name: name, password: password },
-      {
-        withCredentials: true,
-      }
-    );
-    console.log(result.status);
-    if (result.status == 404) navigate("/register");
-    if (result.status == 200) {
-      setIsLoggedin(true);
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/Auth/login",
+        { name: name, password: password },
+        {
+          withCredentials: true,
+        }
+      );
+
       navigate("/Dashboard");
+    } catch (err) {
+      console.log(err);
+      alert(err.response.data);
     }
   };
   return (
@@ -50,7 +52,7 @@ const Login = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              type="text"
+              type="password"
               placeholder="Password"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2 "
             ></input>

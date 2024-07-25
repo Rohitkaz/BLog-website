@@ -12,13 +12,18 @@ const Register = () => {
   const navigate = useNavigate();
   const Register = async () => {
     console.log("hi");
-    const result = await axios.post("http://localhost:8000/Auth/register", {
-      name: name,
-      password: password,
-    });
-    console.log(result.status);
+    try {
+      const result = await axios.post("http://localhost:8000/Auth/register", {
+        name: name,
+        password: password,
+      });
+      console.log(result.status);
 
-    if (result.status == 200 || result.status == 409) return navigate("/Login");
+      if (result.status == 200 || result.status == 409)
+        return navigate("/Login");
+    } catch (err) {
+      alert(err.response.data);
+    }
   };
   return (
     <>
@@ -43,7 +48,7 @@ const Register = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              type="text"
+              type="password"
               placeholder="Password"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2 "
             ></input>
