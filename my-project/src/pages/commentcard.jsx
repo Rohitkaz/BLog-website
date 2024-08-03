@@ -5,8 +5,16 @@ import axios from "axios";
 import Header from "./Header";
 import { IoIosArrowUp } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useAuthcontext } from "./context";
+const Commentcard = ({
+  comment,
+  index,
+  change,
 
-const Commentcard = ({ comment, index, change }) => {
+  changecomments,
+  handleHighlight,
+}) => {
   const [clikes, setClikes] = useState(comment.likes);
   const [isTrue, setIsTrue] = useState(false);
   const [reply, setReply] = useState();
@@ -14,10 +22,48 @@ const Commentcard = ({ comment, index, change }) => {
   const [showreplies, setShowreplies] = useState(false);
   const [showreplyindex, setShowreplyindex] = useState();
   const [replies, setReplies] = useState([]);
+  const [showButtons, setShowbuttons] = useState(false);
+  const [isdeleting, setisdeleting] = useState(false);
+  const [issending, setIssending] = useState(false);
+  const [highlightedComment, setHighlightedComment] = useState(null);
+  const context = useAuthcontext();
+
+  const showButton = () => {
+    if (showButtons === true) setShowbuttons(false);
+    else setShowbuttons(true);
+  };
+  const deletecomment = async () => {
+    if (!context.user) {
+      return alert("First Login to delete comments!");
+    }
+    if (context.user.id !== comment.userId) {
+      return alert("you can delete only your comments!");
+    }
+    setisdeleting(true);
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/deletecomment/${comment._id}/${comment.postId}/${comment.parentId}`,
+
+        {
+          withCredentials: true,
+        }
+      );
+
+      changecomments(comment);
+      setisdeleting(false);
+    } catch (err) {
+      setisdeleting(false);
+      alert(err.message);
+    }
+  };
   const sendReply = async (e) => {
+    if (!context.user) {
+      return alert("First Login to send reply");
+    }
     if (!reply) {
       return alert("reply cannot be empty");
     }
+    setIssending(true);
     const comm = {
       blog_id: comment.postId,
       commentid: e.target.id,
@@ -31,8 +77,10 @@ const Commentcard = ({ comment, index, change }) => {
       });
 
       change(res.data, comment.parentId, index);
+      setIssending(false);
     } catch (err) {
-      console.log(err.message);
+      setIssending(false);
+      alert(err.response.message);
     }
   };
   const setlike = () => {
@@ -55,13 +103,40 @@ const Commentcard = ({ comment, index, change }) => {
     }
   };
   return (
-    <div className="flex flex-col items-center w-[100%] h-[90%] gap-1   ">
-      <div className="flex flex-row w-[87%] gap-2">
-        <img className="w-[30px] h-[30px]" src="./images/user.png"></img>
-        <div className="flex flex-row w-[90% ] h-[10%]  font-heading text-sm font-bold gap-2">
+    <div className="flex flex-col items-center w-[100%] h-[90%] gap-1 rounded-lg   ">
+      <div className="flex flex-row w-[100%] gap-2">
+        <img className="w-[30px] h-[30px]" src="/images/user.png"></img>
+        <div className="flex flex-row w-[90%] h-[10%]  font-heading text-sm font-bold gap-2 mt-1">
           <div>{comment.username}</div>
-          {comment.parentUsername ? (
-            <div className="text-blue-700">@{comment.parentUsername}</div>
+          {comment.Repliedto ? (
+            <div
+              className="text-blue-700 cursor-pointer"
+              onClick={() => handleHighlight(comment.Repliedtoid)}
+            >
+              @{comment.Repliedto}
+            </div>
+          ) : null}
+        </div>
+        <div className=" flex flex-col w-[80%] items-center gap-1  ">
+          <BsThreeDotsVertical
+            className=" mt-1 ml-[50%]"
+            onClick={showButton}
+          />
+          {showButtons ? (
+            <div className="  w-[100%] flex justify-center ">
+              {isdeleting ? (
+                <div className="text-red-700 font-heading font-bold">
+                  deleting...
+                </div>
+              ) : (
+                <button
+                  onClick={deletecomment}
+                  className=" ml-[40%] md:p-1 bg-gray-500 font-heading font-bold  hover:bg-red-700 border-2 border-gray-300 rounded-lg"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
           ) : null}
         </div>
       </div>
@@ -71,12 +146,14 @@ const Commentcard = ({ comment, index, change }) => {
       <div className="flex flex-row w-[87%] font-heading justify-between ">
         <button
           onClick={likecomment}
-          className="md:w-[20%] w-[30%] bg-blue-700 text-white hover:text-green-400"
+          className="p-1 bg-gray-500 text-black font-heading font-bold hover:text-green-400 rounded-md hover:translate-x-1 duration-150"
         >
           Like({clikes})
         </button>
-        <div className=" flex md:w-[20%] w-[40%] bg-blue-700 flex-row justify-center items-center border-2  ">
-          <label className="text-white hover:text-green-600">Reply</label>
+        <div className=" p-1 flex  flex-row bg-gray-500 justify-center items-center rounded-md hover:translate-x-1 duration-150  ">
+          <label className="text-black font-heading font-bold hover:text-green-600">
+            Reply
+          </label>
           {isTrue ? (
             <IoIosArrowUp
               className="  w-[30%]  items-center"
@@ -116,13 +193,19 @@ const Commentcard = ({ comment, index, change }) => {
               }}
             ></textarea>
 
-            <button
-              onClick={sendReply}
-              id={comment._id}
-              className="border-2 border-black text-center w-[20%] bg-slate-400 text-white rounded-md"
-            >
-              send
-            </button>
+            {issending ? (
+              <label className="border-2 border-black text-center p-1 bg-gray-500 text--black font-heading rounded-md">
+                sending..
+              </label>
+            ) : (
+              <button
+                onClick={sendReply}
+                id={comment._id}
+                className="border-2 font-heading font-bold border-black text-center w-[20%] bg-slate-500 text-black rounded-md"
+              >
+                send
+              </button>
+            )}
           </div>
         ) : null}
       </div>

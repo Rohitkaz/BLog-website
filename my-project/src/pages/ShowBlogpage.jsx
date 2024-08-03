@@ -10,6 +10,7 @@ import { LiaCommentSolid } from "react-icons/lia";
 import { useAuthcontext } from "./context";
 const ShowBlogPage = () => {
   const blogdata = useLoaderData();
+
   const blog = blogdata.blog;
   const userlike = blogdata.userlike;
   const [comments, setComments] = useState(blog.comments);
@@ -24,10 +25,17 @@ const ShowBlogPage = () => {
     console.log("hillos");
     setComments((prev) => prev + 1);
   };
+  const deccomment = () => {
+    console.log("deccoment");
+    setComments((prev) => prev - 1);
+  };
   const likeBlog = async () => {
     //  console.log(isLiked);
     if (!context.user) {
       return alert("Login to like blogs");
+    }
+    if (context.user.name === blog.author) {
+      return alert("you cannot like your own blog");
     }
     if (isLiked == false) {
       console.log("hi");
@@ -60,6 +68,7 @@ const ShowBlogPage = () => {
       }
     }
   };
+
   const showcommbar = () => {
     setShowcommentbar(true);
   };
@@ -69,65 +78,69 @@ const ShowBlogPage = () => {
   console.log(blog.content);
 
   return (
-    <div className=" flex flex-row   justify-center    w-[100%]  ">
+    <div className=" flex flex-row   justify-center    w-[100%] ">
       <div
-        className={`flex  flex-col  md:w-[70%] w-[77%] ${
+        className={`flex  flex-col  md:max-w-[700px] w-[94%] min-h-dvh bg-gray-200 p-4 gap-7 ${
           showcommentbar ? "blur-sm fixed" : "blur-none absolute"
         }   gap-2 border-2 `}
       >
-        <div className="flex justify-center font-heading font-bold text-4xl">
-          {blog.maintitle}
-        </div>
-        <div className="w-[100%] flex justify-evenly font-heading font-bold text-red-700">
-          <div> BY-{blog.author}</div>
-          <div> {blog.createdAt}</div>
-        </div>
-        <div className="w-[100%] flex  font-heading gap-7  md:ml-[3%] justify-evenly md:justify-normal   ">
-          <div className="flex flex-row font-heading ">
-            <IoEyeOutline className="w-[30px] h-[20px] ml-[10%]  " />
-            <div className="flex text-center  mt-[-2px]">{blog.views}</div>
+        <h1 className=" font-bold md:text-5xl text-4xl">{blog.maintitle}</h1>
+
+        <div className="w-full  flex flex-row gap-4">
+          <div className="w-[50px] h-[50px] ">
+            <img
+              src="/images/user.png"
+              className="w-full h-full object-cover "
+            ></img>
           </div>
-          <div className="flex flex-row font-heading">
+          <div className="h-[50px] flex flex-col">
+            <h2 className="font-heading">{blog.author}</h2>
+            <h2 className="font-heading">{blog.createdAt}</h2>
+          </div>
+        </div>
+        <div className="flex flex-row w-full gap-4 h-[50px] border-t-2 border-b-2 border-white p-4">
+          <div className="flex flex-row h-full justify-center items-center gap-1  ">
+            <IoEye className="h-[20px] w-[30px]" />
+            <h1>{blog.views}</h1>
+          </div>
+          <div className="flex flex-row h-full justify-center items-center gap-1  ">
             <AiTwotoneLike
               onClick={likeBlog}
-              className={`w-[30px] h-[20px] hover:text-green-500 ${
-                isLiked ? "text-red-600" : null
-              }`}
+              className="h-[20px] w-[30px] hover:bg-gray-600"
             />
-            <div className="flex text-center  mt-[-2px]">{likes}</div>
+            <h1>{likes}</h1>
           </div>
-          <div className="flex flex-row font-heading">
-            <LiaCommentSolid className="w-[30px] h-[20px]" />
-            <div className="flex text-center  mt-[-2px]">{comments}</div>
+          <div className="flex flex-row h-full justify-center items-center gap-1   ">
+            <LiaCommentSolid
+              onClick={showcommbar}
+              className="h-[20px] w-[30px] hover:bg-gray-600 rounded-sm"
+            />
+            <h1>{comments}</h1>
           </div>
         </div>
-        <img
-          src={`http://localhost:8000/images/${blog.image}`}
-          className="w-[96%] h-[50%] md:h-[500px] ml-[2%] rounded-md "
-        ></img>
-        <div className="flex flex-col w-[100%] h- font-heading">
+        <div classname=" w-full border-b-2    ">
+          <img
+            src={`http://localhost:8000/images/${blog.image}`}
+            className="w-full max-h-[400px] object-cover rounded-lg "
+          ></img>
+        </div>
+        <hr className="border-black border-2"></hr>
+        <div className="flex flex-col w-full gap-2 ">
+          <h1 className=" font-bold md:text-5xl text-4xl">
+            This is the Title of blog
+          </h1>
           {blog.content.map((para, ind) => (
             <>
-              <div className=" w-[100%] text-wrap font-flow font-bold text-[25px] ">
-                {para.title}
-              </div>
+              <h1 className=" w-full  font-heading font-bold ">{para.title}</h1>
 
-              <div className=" w-[100%] text-wrap font-heading font-bold text-cyan-700 text-[19px]">
-                {para.text}
-              </div>
+              <div className=" w-full font-heading">{para.text}</div>
             </>
           ))}
         </div>
-        <button
-          onClick={showcommbar}
-          className="font-heading text-xl bg-blue-800 text-white rounded"
-        >
-          Comments
-        </button>
       </div>
       <div
-        className={` w-[65%]  md:w-[40%] ml-[35%] md:ml-[60%]  z-10 border-2 ${
-          showcommentbar ? "border-red-600" : "border-none"
+        className={` w-[90%]  md:w-[40%] ml-[10%] bg-gray-400  rounded-lg md:ml-[60%]  z-10 border-2 ${
+          showcommentbar ? "border-black" : "border-none"
         } fixed `}
       >
         {showcommentbar ? (
@@ -139,6 +152,7 @@ const ShowBlogPage = () => {
             <CommentBar
               blogid={blog._id}
               change={Comms}
+              deccomment={deccomment}
               blogauthor={blog.author}
             />
           </div>

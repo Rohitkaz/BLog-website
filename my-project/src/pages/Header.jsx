@@ -69,7 +69,7 @@ const Header = () => {
   return (
     <div className=" flex flex-row w-screen bg-black h-[40px] mt-[0px]  fixed z-10">
       <div
-        className={`flex flex-row ${inputwidth}  w-[60%] h-[100%] md:gap-2  gap-3 ml-[3%] md:ml-0  `}
+        className={`flex flex-row ${inputwidth}  w-[60%] h-[100%] md:gap-2  gap-5 ml-[3%] md:ml-0  `}
       >
         <div className=" ml-[2%] md:ml-[20%] flex font-heading  font-bold  text-xl md:text-2xl text-white items-center   ">
           Blogit
@@ -94,11 +94,11 @@ const Header = () => {
                 <>
                   {" "}
                   {searchresult.map((result, index) => (
-                    <div className=" ml-[2%] flex w-[96%] h-[40px] border-2 rounded-lg mt-1   ">
-                      <div className="flex w-[75%] h-[40px] mt-0.5 text-white font-heading ml-2 ">
+                    <div className=" ml-[2%] flex w-[96%]  rounded-lg mt-1 gap-1   ">
+                      <div className="flex w-[75%]  mt-0.5 text-white font-heading ml-2   ">
                         {result.maintitle}
                       </div>
-                      <div className="flex w-[20%] h-[30px] hover:text-green-500 text-white font-heading  border-2 rounded-lg shadow-lg mt-0.5 justify-center ">
+                      <div className="flex items-center h-[30px] p-1 hover:text-green-500 text-white font-heading  border-2 bg-gray-600 rounded-lg shadow-lg mt-0.5 justify-center ">
                         <Link to={`/Blog/${result._id}`}> Read </Link>
                       </div>
                     </div>
@@ -118,28 +118,48 @@ const Header = () => {
           className={`  flex-col h-dvh md:opacity-[100%]   mr-0 font-heading text-xl    md:w-[100%] font-bold  md:bg-black md:flex  md:flex-row  md:h-[100%] text-white list-none gap-[5%] flex items-center  md:justify-end md:pr-[10%] bg-pink-600  ${
             isTrue
               ? "w-[90%] transition-all delay-75 duration-500 ease-in-out opacity-100 "
-              : "w-[0%] opacity-0"
+              : "w-[0%] "
           }`}
         >
           <MdClose className=" md:hidden h-[10%] w-[20%]" onClick={closeham} />
-          <li className="hover:text-cyan-600">
+          <li
+            className={`hover:text-cyan-600 md:block ${
+              isTrue ? null : "hidden"
+            }`}
+          >
             <Link to="/">Home</Link>
           </li>
           {context.user ? (
-            <li className={`hover:text-cyan-600  `}>
+            <li
+              className={`hover:text-cyan-600 md:block ${
+                isTrue ? null : "hidden"
+              }`}
+            >
               <Link to="/dashboard">Dashboard</Link>
             </li>
           ) : (
-            <li className={`hover:text-cyan-600  `}>
+            <li
+              className={`hover:text-cyan-600 md:block ${
+                isTrue ? null : "hidden"
+              }`}
+            >
               <Link to="/Login">Login</Link>
             </li>
           )}
           {context.user ? (
-            <li className={`hover:text-cyan-600  `}>
+            <li
+              className={`hover:text-cyan-600 md:block ${
+                isTrue ? null : "hidden"
+              }`}
+            >
               <button onClick={logout}>Logout</button>
             </li>
           ) : (
-            <li className={`hover:text-cyan-600 `}>
+            <li
+              className={`hover:text-cyan-600 md:block ${
+                isTrue ? null : "hidden"
+              }`}
+            >
               <Link to="/Register">Register</Link>
             </li>
           )}

@@ -19,6 +19,8 @@ import CommentBar from "./pages/comment";
 import Header1 from "./pages/headercheck";
 import Root from "./pages/Root";
 import { Await, defer } from "react-router-dom";
+import Card from "./pages/Card";
+import Slider from "./pages/Slider";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,13 +61,11 @@ const router = createBrowserRouter([
         },
       },
 
-      /* children: [
-          {
-            element: <Blog />,
-            path: "blog",
-          },
-        ],*/
-      // children: [
+      {
+        element: <Slider />,
+        path: "/blog",
+      },
+
       {
         element: <Login />,
         path: "/Login",

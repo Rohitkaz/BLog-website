@@ -3,10 +3,12 @@ import comments from "../models/comment.js";
 const showcomments = express.Router();
 showcomments.get("/:id", async (req, res) => {
   try {
-    const comms = await comments.find({
-      postId: req.params.id,
-      parentId: null,
-    });
+    const comms = await comments
+      .find({
+        postId: req.params.id,
+        parentId: null,
+      })
+      .sort({ createdAt: -1 });
 
     res.status(200).send(comms);
   } catch (err) {

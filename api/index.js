@@ -31,6 +31,7 @@ import userblogs from "./routes/userblogs.js";
 import comment from "./routes/comment.js";
 import reply from "./routes/reply.js";
 import likecomment from "./routes/likecomment.js";
+import deletecomment from "./routes/commentdelete.js";
 
 app.use(
   cors({
@@ -54,7 +55,7 @@ app.use("/yourblog", userblogs);
 app.use("/comment", comment);
 app.use("/reply", reply);
 app.use("/likecomments", likecomment);
-
+app.use("/deletecomment", deletecomment);
 connect().then(() => {
   app.listen(8000, () => {
     console.log("listening for requests");

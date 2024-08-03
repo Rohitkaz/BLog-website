@@ -9,7 +9,7 @@ import { PiHandWavingFill } from "react-icons/pi";
 import { MdSignalCellularNodata } from "react-icons/md";
 import { useAuthcontext } from "./context";
 import Dashboardheader from "./Dashboardheader";
-import { FaUser, FaUsers } from "react-icons/fa";
+import { FaHeart, FaUser, FaUsers } from "react-icons/fa";
 import { FaComments } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import axios from "axios";
@@ -22,104 +22,107 @@ const Dashboard = () => {
   const username = data1.username;
   return (
     <>
-      <Header />
-      <div className=" flex flex-col w-[screen]   ">
-        <Dashboardheader />
-      </div>
-      <div className=" flex md:flex-row flex-col w-[screen] h-dvh md:gap-8 gap-4  ">
-        <div className=" ml-[1%] flex flex-col md:w-[40%] w-[100%]  h-[100%]  ">
-          <div className=" ml-[2%]  font-heading font-extrabold  text-lg md:text-2xl flex flex-row items-center gap-2">
-            Welcome Back!
-            <PiHandWavingFill className=" " />
-          </div>
-          <div className=" ml-[2%]  font-heading font-bold  text-lg md:text-2xl flex items-center">
-            Latest comments
-          </div>
-          <div className="w-[96%] flex-wrap shadow-lg rounded-lg md:w-[100%] border-2 border-grey h-[100%] md:h-[70%] md:ml-[2%] ml-[1%] position-fixed overflow-y-scroll scrollbar-thin gap-[4%] md:gap-[2%] ">
-            {data.length > 0 ? (
-              <>
-                {data.map((comment, index) => (
-                  <div className="w[96%] shadow-lg rounded-lg border-2 border-grey h-[35%] md:h-[30%]  flex flex-row m-[1%] ">
-                    <div className="w-[80%]  h-[100%]  flex flex-col justify-center gap-1">
-                      <div className="w-[80%]  h-[60%] items-center   gap-2 flex flex-row">
-                        <img
-                          src="./images/user.png"
-                          className="w-[20%]  h-[60%]"
-                        ></img>
-                        <div className=" flex flex-col ">
-                          <div className="font-heading font-bold">
-                            {comment.username}
-                          </div>
+      <div className="w-screen md:h-dvh  bg-gray-300 ">
+        <Header />
+        <div className=" flex flex-col w-[screen]   ">
+          <Dashboardheader />
+        </div>
+        <div className=" flex md:flex-row flex-col w-[screen] h-[85%] md:gap-8 gap-4  ">
+          <div className=" ml-[1%] flex flex-col md:w-[40%] w-[100%]  h-[100%]   ">
+            <div className=" ml-[2%]  font-heading font-extrabold  text-lg md:text-2xl flex flex-row items-center gap-2">
+              Welcome Back! {username}
+              <PiHandWavingFill className=" " />
+            </div>
+            <div className=" ml-[2%]  font-heading font-bold  text-lg md:text-2xl flex items-center">
+              Latest comments
+            </div>
+            <div className="w-[96%]  flex flex-wrap shadow-lg rounded-lg md:w-[100%]   min-h-[400px] max-h-[400px] md:min-h-[80%] md:ml-[2%] ml-[1%]  overflow-y-scroll scrollbar-track-slate-400 gap-[4%] md:gap-0.5 ">
+              {data.length > 0 ? (
+                <>
+                  {data.map((comment, index) => (
+                    <div className="w-[96%] shadow-lg rounded-lg border-2 border-white h-[35%] md:h-[30%]  flex flex-row m-[1%] p-2 ">
+                      <div className="w-[80%]  h-[100%]  flex flex-col justify-center gap-1">
+                        <div className="w-[60%]  h-[60%] items-center   gap-2 flex flex-row">
+                          <img
+                            src="/images/user.png"
+                            className="w-[20%]  h-[60%]"
+                          ></img>
+                          <div className=" flex flex-col ">
+                            <div className="font-heading font-bold">
+                              {comment.username}
+                            </div>
 
-                          <div className="font-heading font-bold">
-                            {comment.createdAt}
+                            <div className="font-heading font-bold">
+                              {comment.createdAt}
+                            </div>
                           </div>
                         </div>
+                        <div className="font-heading font-bold  h-[40%] line-clamp-1 ">
+                          {comment.content}
+                        </div>
                       </div>
-                      <div className="font-heading font-bold  h-[40%] ">
-                        {comment.content}
+                      <div className=" h-full md:mt-0 mt-2 z-2  flex items-center justify-center ">
+                        <Link
+                          to={`/Blog/${comment.postId}`}
+                          className="p-1 text-center hover:text-green-600   rounded-md  border-2 bg-slate-400 font-bold font-heading shadow-lg"
+                        >
+                          View
+                        </Link>
                       </div>
                     </div>
-                    <div className="w-[20%]  h-[100%] flex items-center justify-center ">
-                      <Link
-                        to={`/Blog/${comment.postId}`}
-                        className="w-[60%] md:w-[70%] text-center hover:text-green-600   rounded-md  border-2 bg-slate-400 font-bold font-heading shadow-lg"
-                      >
-                        View
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div className="w-[100%] h-[100%] flex items-center justify-center">
-                no comments
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="md:ml-0 ml-[2%] w-[96%] md:w-3/4  border-2 h-[70%] md:mt-[4.5%] shadow-lg rounded-md flex flex-col gap-4 ">
-          <div className=" flex flex-col mt-4 w-[40%] gap-3 border-2 h-[50%] ml-[5%] md:ml-[10%] rounded-lg shadow-lg shadow-slate-400">
-            <img
-              src="./images/user.png"
-              className="w-[20%]  h-[40%] ml-[40%] mt-4"
-            ></img>
-            <div className=" flex flex-row font-heading justify-center font-bold text-2xl ">
-              {username}
+                  ))}
+                </>
+              ) : (
+                <div className="w-[100%] min-h-[400px] flex items-center justify-center font-heading font-bold">
+                  no comments
+                </div>
+              )}
             </div>
           </div>
-          <div className=" flex  w-full   h-[40%]">
-            <div className="flex flex-col gap-2   w-[27%] md:w-[30%]  border-2 h-[80%] ml-[2%] md:ml-[10%] rounded-lg shadow-lg shadow-slate-400">
-              <div className=" flex mt-4 gap-4 md:gap-7  text-slate-600 flex-row font-heading justify-center font-bold text-xl md:text-2xl">
-                Views
-                <div className=" flex mt-1   ">
-                  <FaUser />
-                </div>
+          <div className=" w-[94%] ml-2 md:ml-0 flex-col flex md:h-[80%] h-dvh md:mt-[5%]  p-4 gap-4 md:w-[55%] rounded-lg border-white md:border-2">
+            <div className="flex flex-col gap-2 items-center justify-center w-[80%]  md:w-[40%] h-[40%] border-2 border-white rounded-lg font-heading font-bold text-2xl">
+              <div className="  w-[20%] ">
+                <img
+                  src="/images/user1.png"
+                  className=" w-full object-cover "
+                ></img>
               </div>
-              <div className=" flex flex-row font-heading justify-center font-bold text-2xl ">
-                {userdata.totalViews}
-              </div>
-            </div>
-            <div className=" flex flex-col  w-[27%] md:w-[30%]  border-2 h-[80%] ml-[5%] md:ml-[10%] rounded-lg shadow-lg shadow-slate-400">
-              <div className=" flex mt-4 gap-4 md:gap-7  text-slate-600 flex-row font-heading justify-center font-bold text-xl md:text-2xl ">
-                Likes
-                <div className=" flex mt-1   ">
-                  <FaRegHeart />
-                </div>
-              </div>
-              <div className=" flex flex-row font-heading justify-center font-bold text-2xl ">
-                {userdata.totalLikes}
+              <div className="w-full flex justify-center">
+                <h1 className="text-center font-heading font-bold text-2xl">
+                  {username}
+                </h1>
               </div>
             </div>
-            <div className=" flex flex-col  w-[33%] md:w-[30%]  border-2 h-[80%] ml-[5%] md:ml-[10%] rounded-lg shadow-lg shadow-slate-400">
-              <div className=" flex mt-4 gap-2 md:gap-7  text-slate-600 flex-row font-heading justify-center font-bold text-lg md:text-2xl ">
-                Comments
-                <div className=" flex mt-1   ">
-                  <FaComments />
+            <div className="w-full md:h-[42%] h-[50%] flex flex-col  md:flex-row md:p-2  gap-3 font-heading font-bold">
+              <div className=" md:h-full h-[32%] border-white border-2 w-[80%] md:w-[30%] flex flex-col md:gap-4 gap-2 rounded-lg p-2">
+                <div className=" w-full h-[30%] flex flex-row  md:gap-2 items-center ">
+                  <h1 className="text-lg">Comments</h1>
+                  <FaComments className=" h-full  w-full" />
                 </div>
+
+                <h1 className="w-full text-xl md:text-2xl ml-2">
+                  {userdata.totalComments}
+                </h1>
               </div>
-              <div className=" flex flex-row font-heading justify-center font-bold text-2xl ">
-                {userdata.totalComments}
+              <div className=" md:h-full h-[32%] border-white border-2 w-[80%] md:w-[30%] flex flex-col md:gap-4 gap-2 rounded-lg p-2">
+                <div className=" w-full h-[30%] flex flex-row  md:gap-2 items-center ">
+                  <h1 className="text-lg">Views</h1>
+                  <FaUser className=" h-full  w-full" />
+                </div>
+
+                <h1 className="w-full text-xl md:text-2xl ml-2">
+                  {userdata.totalViews}
+                </h1>
+              </div>
+              <div className=" md:h-full h-[32%] border-white border-2 w-[80%] md:w-[30%] flex flex-col md:gap-4 gap-2 rounded-lg p-2">
+                <div className=" w-full h-[30%] flex flex-row  md:gap-2 items-center ">
+                  <h1 className="text-lg">Likes</h1>
+                  <FaHeart className=" h-full  w-full" />
+                </div>
+
+                <h1 className="w-full text-xl md:text-2xl ml-2">
+                  {userdata.totalLikes}
+                </h1>
               </div>
             </div>
           </div>

@@ -78,11 +78,12 @@ const BlogForm = () => {
   };
   return (
     <>
-      <div className=" flex flex-col w-[screen] h-dvh  ">
+      <div className=" flex flex-col w-[screen]  bg-gray-200 ">
         <Header />
         <Dashboardheader />
-        <div className="flex flex-col gap-[20px] max-w-[1024px] m-[2%] lg:ml-[10%]">
-          <div className=" flex flex-col justify-center items-center border-black border-2 sm:h-[300px] sm:m[40px] sm:w-[100%]   h-[300px] w-[100%]  ">
+        <div className="flex flex-col gap-[20px] max-w-[1024px] m-[2%] lg:ml-[10%] p-2">
+          <div className=" flex flex-col justify-center items-center rounded-lg  sm:h-[300px] sm:m[40px] sm:w-[100%]   h-[200px] w-[100%]  ">
+            <h1 className="font-heading font-bold"> upload image here...</h1>
             <img
               src={file}
               className="w-[80%] h-[85%] object-contain mt-[1%] border-none"
@@ -107,53 +108,64 @@ const BlogForm = () => {
                 accept="image/png, image/jpeg,image/jpg,img/gif"
               ></input>
 
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter the blog title here...."
-                className={`w-[80%] border-2   sm:w-[95%] md:h-[40px] md:w-[95%]`}
-              ></input>
+              <div className="w-[100%] flex flex-col md:gap-2 gap-1 ">
+                <h1 className="font-heading font-bold  ">Title</h1>
+                <div className="w-[100%] flex flex-row gap-2">
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter the blog title here...."
+                    className={`w-[80%] border-2  rounded-lg  sm:w-[95%] md:h-[40px] md:w-[95%]`}
+                  ></input>
 
-              {!isSubmitting ? (
-                <button
-                  type="submit"
-                  className={` h-[40px] hover:text-red-700 z-5 shadow-lg font-heading font-bold  border-2 bg-slate-400  rounded-lg  `}
-                >
-                  PUBLISH
-                </button>
-              ) : (
-                <label
-                  className={` h-[40px] hover:text-red-700 z-5 shadow-lg font-heading font-bold  border-2 bg-slate-400  rounded-lg  `}
-                >
-                  Uploading
-                </label>
-              )}
+                  {!isSubmitting ? (
+                    <button
+                      type="submit"
+                      className={` h-[40px] hover:text-red-700 z-5 shadow-lg font-heading font-bold  border-2 bg-slate-400  rounded-lg  `}
+                    >
+                      Publish
+                    </button>
+                  ) : (
+                    <label
+                      className={` h-[40px] hover:text-red-700 z-5 shadow-lg font-heading font-bold  border-2 bg-slate-400  rounded-lg  `}
+                    >
+                      Uploading
+                    </label>
+                  )}
+                </div>
+              </div>
             </div>
-            <textarea
-              name="blogpara"
-              cols="30"
-              rows="7"
-              className="border-2 border-black w-[100%]"
-              placeholder="Write description here..."
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
-            ></textarea>
-            <div className="flex flex-col gap-1 w-[100%]">
+            <div className="w-[100%] flex flex-col md:gap-2 gap-1 ">
+              <h1 className="font-heading font-bold  ">Description</h1>
+              <textarea
+                cols="30"
+                rows="2"
+                name="blogpara"
+                className={`w-[100%] border-2  rounded-lg   md:h-[40px] `}
+                placeholder="Write description here..."
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              ></textarea>
+            </div>
+            <h1 className="font-heading font-bold">
+              Enter content of blog in paragraphs
+            </h1>
+            <div className="flex flex-col gap-1 w-[100%] ">
               {contentBox.map((content, index) => (
                 <>
                   <div className="flex flex-row gap-1 w-[100%]">
                     <label
                       onClick={addContent}
-                      className=" w-[10%]  sm:w-[5%] lg:w-[4%] h-[40px] place-content-center border-green-400 border-2 rounded-full "
+                      className=" w-[35px]  sm:w-[5%] lg:w-[4%] md:h-[40px] h-[35px] mt-1 place-content-center border-green-400 border-2 rounded-full "
                     >
                       <GrAdd className=" w-[100%] h-[80%]  " />
                     </label>
                     <input
                       type="text"
                       name="title"
-                      placeholder="Title..."
-                      className={`  w-[85%] border-2  sm:w-[90%] md:h-[40px] md:w-[95%]`}
+                      placeholder="para heading..."
+                      className={`  w-[85%] border-2 rounded-lg  sm:w-[90%] md:h-[40px] md:w-[95%]`}
                       onChange={(e) => changeContentTitle(e, index)}
                       value={content.title}
                     ></input>
@@ -169,7 +181,7 @@ const BlogForm = () => {
                     name="blogpara"
                     cols="30"
                     rows="10"
-                    className="border-2 border-black w-[100%]"
+                    className="border-2 rounded-lg  w-[100%]"
                     placeholder="Your story here..."
                     onChange={(e) => changeContentPara(e, index)}
                     value={content.blogpara}

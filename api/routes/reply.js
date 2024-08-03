@@ -26,11 +26,14 @@ reply.post("", async (req, res) => {
       content: content,
       parentId: parentId,
       createdAt: createdAt,
-      parentUsername: req.body.parentUsername,
+      Repliedto: parentcomment.username,
+      Repliedtoid: commentid,
     });
 
     await comment.save();
-    res.status(200).send(comment);
+    const replies = await comments.find({ parentId: parentId });
+
+    res.status(200).send(replies);
   } catch (err) {
     res.send(500).send("internal server error");
   }
