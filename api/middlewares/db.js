@@ -4,7 +4,9 @@ dotenv.config();
 
 export default async function connect() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/Blog");
+    await mongoose.connect(
+      "mongodb+srv://wwwrahulveeru12345:jin%40kazama123@cluster0.i0rxtmb.mongodb.net/Blog"
+    );
     //await mongoose.connect(process.env.MONGODB_LINK);
     console.log("database connected");
   } catch (error) {

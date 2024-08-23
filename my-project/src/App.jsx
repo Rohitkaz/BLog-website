@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <Home />,
         path: "/",
         loader: async ({ params }) => {
-          console.log("hi");
+          // console.log("hi");
 
           try {
             const res = axios.get(`http://localhost:8000/blog`, {
@@ -90,17 +90,26 @@ const router = createBrowserRouter([
         element: <ShowBlogPage />,
         path: "/blog/:id",
         loader: async ({ params }) => {
-          console.log("hi");
+          // console.log("hi");
           try {
-            const res = await axios.get(
+            const blogPromise = axios.get(
               `http://localhost:8000/blog/${params.id}`,
               {
                 withCredentials: true,
               }
             );
-            const data = await res.data;
-            console.log(data);
-            return data;
+            const viewPromise = axios.get(
+              `http://localhost:8000/blog/${params.id}/views`,
+              {
+                withCredentials: true,
+              }
+            );
+            const [blog, viewed] = await Promise.all([
+              blogPromise,
+              viewPromise,
+            ]);
+
+            return { blog: blog.data.blog, userlike: viewed.data.userlike };
           } catch (err) {
             return redirect("/");
           }
