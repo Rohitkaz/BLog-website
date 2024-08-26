@@ -1,19 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const CardC = ({ blogdata }) => {
+const Dashboardcard = ({ blogdata }) => {
   const defaultimg = (e) => {
     e.target.src = "/images/noimage.png";
   };
   return (
     // <div className=" flex justify-center w-screen h-screen bg-gray-200">
-    <div className="flex flex-col   min-w-[100%]   min-h-[480px] max-h-[480px]  rounded-lg p-2 bg-white transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
-      <div className="w-full     ">
+    <div className="flex md:flex-row flex-col min-w-[100%]    max-h-[20%]  rounded-lg p-2 bg-white transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
+      <div className="md:w-[50%]  w-full   ">
         <img
           className="w-full h-[250px]  object-cover  rounded-lg"
           src={`http://localhost:8000/images/${blogdata.image}`}
           onError={defaultimg}
         ></img>
       </div>
+      <div className="gap-4 flex flex-col md:ml-4 md:w-[40%] w-full">
       <div className="p-2">
         <h2 className="font-heading font-bold text-lg line-clamp-1">
           {blogdata.maintitle}
@@ -41,8 +42,9 @@ const CardC = ({ blogdata }) => {
           Read More
         </Link>
       </div>
+      </div>
     </div>
-    //  </div>
+    
   );
 };
-export default CardC;
+export default Dashboardcard;

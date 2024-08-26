@@ -63,7 +63,7 @@ const BlogForm = () => {
           headers: { "content-Type": "multipart/form-data" },
         }
       );
-
+      setisSubmitting(false);
       navigate(`/Blog/${result.data}`);
     } catch (err) {
       alert(err.response.data);

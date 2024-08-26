@@ -20,10 +20,11 @@ const Slider = ({ popularpost, trending }) => {
     } else setCurrent(current + 1);
   };
   return (
-    <div className="w-[100%]  flex  flex-col md:pl-10  lg:flex-row gap-10   bg-gray-200 ">
-      <div className=" flex flex-col ml-2  w-[100%] md:w-[650px]">
+    <div className="w-[100%]  flex  flex-col pl-4 lg:pl-10  lg:flex-row gap-10   bg-gray-200 
+    ">
+      <div className=" flex flex-col ml-2   w-[100%] md:w-[95%] lg:w-[60%] ">
         <h1 className="font-heading font-bold text-4xl  ">| Popular Blogs</h1>
-        <div className="flex  border-2 mt-4 border-gray-700  overflow-hidden relative  md:w-[650px] w-[94%] h-[450px]  rounded-lg shadow-xl ">
+        <div className="flex  border-2 mt-4 border-gray-700  overflow-hidden relative  md:w-full w-[94%] h-[500px]  rounded-lg shadow-xl ">
           <div
             className={`   flex flex-row  gap-4 p-2 items-center  over-x-scroll scrollbar-hidden  w-[100%]   transition-all ease-out duration-300
 
@@ -44,11 +45,11 @@ const Slider = ({ popularpost, trending }) => {
           </div>
         </div>
       </div>
-      <div className=" w-full  md:ml-7">
-        <h1 className=" w-full ml-4  font-heading font-bold text-4xl ">
+      <div className="   lg:ml-7">
+        <h1 className="  ml-4  font-heading font-bold text-4xl ">
           | Trending Blogs
         </h1>
-        <div className="  flex  gap-4 md:h-[450px] md:w-[350px] w-[100%] md:pt-4 flex-wrap overflow-x-hidden  mt-3.5 lg:flex-nowrap justify-center  md:justify-start md:items-center    lg:flex-col  lg:overflow-y-scroll lg:border-2  border-gray-700  lg:scrollbar-track-teal-400    rounded-lg ">
+        <div className=" md:mt-4 flex  gap-4 lg:h-[500px] lg:w-[350px] w-[100%] md:pt-4 flex-wrap overflow-x-hidden   mt-3.5 lg:flex-nowrap justify-center  md:justify-start md:items-center    lg:flex-col  lg:overflow-y-scroll lg:border-2  border-gray-700  lg:scrollbar-track-teal-400    rounded-lg ">
           {trending.map((item) => (
             <Card blogdata={item} />
           ))}

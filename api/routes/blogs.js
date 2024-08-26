@@ -9,8 +9,9 @@ import { getCachedBlogs } from "../cache/cache.js";
 const blog = express.Router();
 blog.get("", async (req, res) => {
   try {
+    console.log("hi")
     const blogs = await getCachedBlogs();
-    // console.log(blogs);
+    console.log(blogs);
 
     res.set({ "Cache-Control": "max-age=600" });
 

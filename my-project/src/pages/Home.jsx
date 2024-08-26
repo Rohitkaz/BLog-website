@@ -17,7 +17,7 @@ import Card from "./Card";
 
 const Home = () => {
   const data = useLoaderData();
-
+ 
   return (
     <>
       <React.Suspense
@@ -40,11 +40,11 @@ const Home = () => {
                     <Slider popularpost={Popularpost} trending={Trending} />
                   </div>
 
-                  <div className="flex-col   w-full md:ml-10 md:mt-5 mt-5  ">
+                  <div className="flex-col   w-full md:ml-2 lg:ml-10 md:mt-5 mt-5  ">
                     <h1 className="font-heading font-bold text-4xl   ml-3">
                       | Latest Blogs.
                     </h1>
-                    <div className=" flex  flex-wrap w-full justify-center md:justify-start md:mt-4  gap-8">
+                    <div className=" flex  flex-wrap w-full justify-center md:justify-start md:mt-4  gap-8 md:gap-4">
                       {Latestpost.map((item) => (
                         <Card blogdata={item} />
                       ))}

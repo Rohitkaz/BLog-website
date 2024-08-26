@@ -31,7 +31,24 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchWrapperRef]);
-
+  useEffect(()=>{
+    const controller=new AbortController();
+    const signal=controller.signal;
+    const Fetchresult=async()=>{
+      try {
+        const result = await axios.get(
+          `http://localhost:8000/search?query=${input}`
+        ,{signal:signal});
+        setSearchresult(result.data);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    Fetchresult();
+    return ()=>{
+      controller.abort();
+    }
+  },[input])
   const logout = async () => {
     const result = await axios.get(
       "http://localhost:8000/Auth/logout",
@@ -55,17 +72,7 @@ const Header = () => {
     setIsHidden(false);
   };
 
-  const Search = async (e) => {
-    setInput(e.target.value);
-    try {
-      const result = await axios.get(
-        `http://localhost:8000/search?query=${e.target.value}`
-      );
-      setSearchresult(result.data);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  
   return (
     <div className=" flex flex-row w-screen bg-black h-[40px] mt-[0px]  fixed z-10">
       <div
@@ -82,7 +89,7 @@ const Header = () => {
             <CiSearch className=" text-white font-heading  h-[100%] w-[7%] text-center mt-0.5" />
             <input
               value={input}
-              onChange={Search}
+              onChange={(e)=>setInput(e.target.value)}
               type="text"
               placeholder="Search..."
               className=" text-white font-heading  bg-black outline-none md:w-[95%] mt-1 md:mt-0 "

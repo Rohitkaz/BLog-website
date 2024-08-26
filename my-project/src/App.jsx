@@ -118,7 +118,7 @@ const router = createBrowserRouter([
       {
         element: <Allblog />,
         path: "/Yourblog",
-        loader: async ({ params }) => {
+      /*  loader: async ({ params }) => {
           console.log("hi");
           try {
             const res = await axios.get(`http://localhost:8000/Yourblog`, {
@@ -130,7 +130,7 @@ const router = createBrowserRouter([
           } catch (err) {
             return redirect("/dashboard");
           }
-        },
+        },*/
       },
       //  ],
       //  },
