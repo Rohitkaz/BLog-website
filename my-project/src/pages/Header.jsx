@@ -4,7 +4,7 @@ import { MdClose } from "react-icons/md";
 import { useState, useContext, useEffect, useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
-import BlogCard from "./BlogCard";
+
 import { useAuthcontext } from "./context";
 import { Navigate } from "react-router-dom";
 const Header = () => {
@@ -58,6 +58,7 @@ const Header = () => {
       }
     );
     if (result.status === 204) {
+      localStorage.clear();
       navigate("/login");
     }
   };

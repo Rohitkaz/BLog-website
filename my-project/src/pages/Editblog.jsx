@@ -8,14 +8,19 @@ import Header from "./Header";
 import Dashboardheader from "./Dashboardheader";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const BlogForm = () => {
+import { useLoaderData } from "react-router-dom";
+const Editblog = () => {
+  const blogdata= useLoaderData();
+  
+
   const navigate = useNavigate();
-  const [contentBox, setContentBox] = useState([{ title: "", text: "" }]);
-  const [title, setTitle] = useState("");
-  const [file, setFile] = useState();
-  const [image, setImage] = useState();
-  const [author, setAuthor] = useState("ROHIT");
-  const [description, setDescription] = useState("");
+  const [contentBox, setContentBox] = useState(blogdata.content);
+  const[image,setImage]=useState()
+  const [title, setTitle] = useState(blogdata.maintitle);
+  const [file, setFile] = useState(`http://localhost:8000/images/${blogdata.image}`);
+  
+  
+  const [description, setDescription] = useState(blogdata.description);
   const [isSubmitting, setisSubmitting] = useState(false);
   const changeContentTitle = (e, index) => {
     const temp = [...contentBox];
@@ -40,21 +45,21 @@ const BlogForm = () => {
       return alert("title cannot be empty!");
     }
     // formdata does not directly stringify and sends only strings so stringify yourself
-    formData.append("author", author);
+    
     formData.append("description", description);
     formData.append("maintitle", title);
     formData.append("blogcnt", JSON.stringify(contentBox));
     formData.append("image", image);
-
+ console.log(formData);
     /* console.log(image);
         console.log(title);
         console.log(blogcnt);*/
 
     try {
       setisSubmitting(true);
-      console.log(contentBox);
+    
       const result = await axios.post(
-        "http://localhost:8000/newblog",
+        `http://localhost:8000/editblog/${blogdata._id}`,
         formData,
         {
           withCredentials: true,
@@ -64,8 +69,7 @@ const BlogForm = () => {
         }
       );
       setisSubmitting(false);
-      localStorage.clear();
-      navigate(`/Blog/${result.data}`);
+      navigate(`/Blog/${blogdata._id}`);
     } catch (err) {
       alert(err.response.data);
       setisSubmitting(false);
@@ -80,7 +84,7 @@ const BlogForm = () => {
   return (
     <>
       <div className=" flex flex-col w-[screen]  bg-gray-200 ">
-        
+        <Header />
         <Dashboardheader />
         <div className="flex flex-col gap-[20px] max-w-[1024px] m-[2%] lg:ml-[10%] p-2">
           <div className=" flex flex-col justify-center items-center rounded-lg  sm:h-[300px] sm:m[40px] sm:w-[100%]   h-[200px] w-[100%]  ">
@@ -185,7 +189,7 @@ const BlogForm = () => {
                     className="border-2 rounded-lg  w-[100%]"
                     placeholder="Your story here..."
                     onChange={(e) => changeContentPara(e, index)}
-                    value={content.blogpara}
+                    value={content.text}
                   ></textarea>
                 </>
               ))}
@@ -197,4 +201,4 @@ const BlogForm = () => {
   );
 };
 
-export default BlogForm;
+export default Editblog;

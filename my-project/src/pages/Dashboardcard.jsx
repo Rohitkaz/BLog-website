@@ -14,12 +14,12 @@ const Dashboardcard = ({ blogdata }) => {
           onError={defaultimg}
         ></img>
       </div>
-      <div className="gap-4 flex flex-col md:ml-4 md:w-[40%] w-full">
+      <div className="gap-4 flex flex-col md:ml-4 md:w-[45%] lg:w-[40%] w-full">
       <div className="p-2">
         <h2 className="font-heading font-bold text-lg line-clamp-1">
           {blogdata.maintitle}
         </h2>
-        <p className=" md:w-[265px] min-w-[95%] min-he  font-heading text-md font-bold text-gray-600 line-clamp-3 ">
+        <p className=" md:w-[265px] min-w-[95%]   font-heading text-md font-bold text-gray-600 line-clamp-3 ">
           {blogdata.description}
         </p>
       </div>
@@ -34,13 +34,22 @@ const Dashboardcard = ({ blogdata }) => {
             <h2>{blogdata.createdAt}</h2>
           </div>
         </div>
-
+    <div className="flex flex-row gap-2 p-1">
         <Link
           to={`/Blog/${blogdata._id}`}
-          className="text-center text-white bg-purple-600 px-3 py-1.5 mr-1 rounded-lg font-heading hover:bg-purple-700"
+          className=" md:text-center text-white  bg-purple-600 px-3 py-1.5 mr-1 rounded-lg font-heading hover:bg-purple-700 "
         >
-          Read More
+          Read 
         </Link>
+        <Link
+          to={`/EditBlog/${blogdata._id}`}
+          className="md:text-center  text-white bg-purple-600 px-3 py-1.5 mr-1 rounded-lg font-heading hover:bg-purple-700 "
+        >
+          Edit 
+        </Link>
+        
+        
+        </div>
       </div>
       </div>
     </div>

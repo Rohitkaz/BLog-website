@@ -7,9 +7,9 @@ userblogs.use(verifyJWT);
 userblogs.get("/:currentpage", async (req, res) => {
 const currentpage=parseInt(req.params.currentpage);
 console.log(currentpage);
-  const author = req.user.name;
+  const authorid = req.user.id;
   try {
-    const post = await posts.find({ author: author }).skip(currentpage*4).sort({_id: -1}).limit(4);
+    const post = await posts.find({ authorId:authorid }).skip(currentpage*4).sort({_id: -1}).limit(4);
     res.status(200).send(post);
   } catch (err) {
     console.log(err);

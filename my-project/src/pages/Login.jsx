@@ -9,10 +9,11 @@ import { useAuthcontext } from "./context";
 const Login = () => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
-
+  
   const navigate = useNavigate();
-  const context = useAuthcontext();
-  const login = async () => {
+  const [error,setError]=useState();
+  const login = async (e) => {
+    e.preventDefault();
     console.log(name);
     try {
       const result = await axios.post(
@@ -21,12 +22,12 @@ const Login = () => {
         {
           withCredentials: true,
         }
-      );
-
+      )
       navigate("/Dashboard");
     } catch (err) {
-      console.log(err);
-      alert(err.response.data);
+      setError(err.response.data)
+  
+    
     }
   };
   return (
@@ -37,15 +38,17 @@ const Login = () => {
           <div className="w-full border-b-2 border-gray-500 mt-[10px] font-sans text-lg text-center  p-4 font-bold ">
             WELCOME BACK!
           </div>
-          <div className="flex flex-col mt-[50px] gap-5 justify-center items-center   ">
+          <form onSubmit={login} className="flex flex-col mt-[50px] gap-5 justify-center items-center   ">
             <input
               name={name}
+            
               onChange={(e) => {
                 setName(e.target.value);
               }}
               type="text"
               placeholder="Name"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2"
+              required
             ></input>
             <input
               name={password}
@@ -55,14 +58,15 @@ const Login = () => {
               type="password"
               placeholder="Password"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2 "
-            ></input>
+            required></input>
             <button
-              onClick={login}
+            
+              type="submit"
               className=" border-none bg-blue-800 mt-5 h-[50px] text-center pt-2 w-3/4 text-white hover:bg-teal-500 hover:text-blue-900 "
             >
               LOGIN
             </button>
-          </div>
+          </form>
 
           <div className=" border-gray-500 border-t-2 mt-10 flex flex-row justify-between md:p-5 p-1">
             <div className="text-blue-600 font-heading hover:text-green-500">
@@ -70,7 +74,9 @@ const Login = () => {
             </div>
             <div>forgot Password?</div>
           </div>
+         <h1 className=" text-red-600 text-center  ">{error}</h1>
         </div>
+        
       </div>
     </>
   );

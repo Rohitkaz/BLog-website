@@ -12,8 +12,8 @@ blog.get("", async (req, res) => {
     console.log("hi")
     const blogs = await getCachedBlogs();
     console.log(blogs);
-
     res.set({ "Cache-Control": "max-age=600" });
+    
 
     res.status(200).send(blogs);
   } catch (err) {
@@ -29,8 +29,9 @@ blog.get("/:id", async (req, res) => {
     const blog = {
       blog: blog1,
     };
-    res.set({ "Cache-Control": "max-age=600" });
-    
+  
+  //  res.set({ "Cache-Control": "max-age=600" });
+    console.log("i am here");
     res.status(200).send(blog);
   } catch (err) {
     console.log(err.message);
@@ -38,8 +39,9 @@ blog.get("/:id", async (req, res) => {
   }
 });
 blog.get("/:id/views", async (req, res) => {
+  
   console.log(req.user);
-  try {
+ try {
     if (req.user) {
       console.log("hi");
       const user = await Engagement.findOne({
@@ -59,14 +61,17 @@ blog.get("/:id/views", async (req, res) => {
         await userEngagement.save();
         const blog = await posts.findOneAndUpdate(
           { _id: req.params.id },
-          { $inc: { views: 1 } }
+          { $inc: { views: 1 } },
+         
         );
+        
       } else {
         console.log("finallissds");
         if (user.views == false) {
           const blog = await posts.findOneAndUpdate(
             { _id: req.params.id },
-            { $inc: { views: 1 } }
+            { $inc: { views: 1 } },
+           
           );
           const engagement = await Engagement.findOneAndUpdate(
             { userId: req.user.id, postId: req.params.id },
@@ -74,6 +79,7 @@ blog.get("/:id/views", async (req, res) => {
           );
         }
       }
+      
     } else {
       console.log("here");
       const viewedblogs = req.viewedblogs;
@@ -106,12 +112,19 @@ blog.get("/:id/views", async (req, res) => {
       });
       userlike = user1.like;
     }
-    console.log(userlike);
-    res.status(200).send({userlike});
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send("internal server error");
-  }
-});
+    const blog=await posts.findOne({ _id: req.params.id });
+
+    const engagement={views:blog.views,likes:blog.likes,comments:blog.comments,userlike:userlike}
+    
+    res.status(200).send(engagement);
+  
+}catch(err)
+{
+  console.log(err);
+  res.status(500).send("internal server error");
+}
+}
+  
+);
 
 export default blog;

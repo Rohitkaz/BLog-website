@@ -131,7 +131,7 @@ const Commentcard = ({
               ) : (
                 <button
                   onClick={deletecomment}
-                  className=" ml-[40%] md:p-1 bg-gray-500 font-heading font-bold  hover:bg-red-700 border-2 border-gray-300 rounded-lg"
+                  className=" ml-[40%] md:pl-1 md:pr-1 bg-slate-300 hover:translate-x-1 transition-all ease-in-out font-heading font-bold  hover:text-red border-2 border-gray-300 rounded-lg"
                 >
                   Delete
                 </button>
@@ -140,18 +140,18 @@ const Commentcard = ({
           ) : null}
         </div>
       </div>
-      <div className="  font-heading w-[87%]  border-2 border-gray-500 rounded-md mt-2">
+      <div className="  font-heading w-[87%] text-blue-800 border-2 border-gray-500 rounded-md mt-2">
         {comment.content}
       </div>
       <div className="flex flex-row w-[87%] font-heading justify-between ">
         <button
           onClick={likecomment}
-          className="p-1 bg-gray-500 text-black font-heading font-bold hover:text-green-400 rounded-md hover:translate-x-1 duration-150"
+          className="p-1 text-black bg-slate-400    rounded-md hover:translate-x-1 duration-150"
         >
           Like({clikes})
         </button>
-        <div className=" p-1 flex  flex-row bg-gray-500 justify-center items-center rounded-md hover:translate-x-1 duration-150  ">
-          <label className="text-black font-heading font-bold hover:text-green-600">
+        <div className=" p-1 flex  flex-row bg-slate-400 justify-center items-center rounded-md hover:translate-x-1 duration-150  ">
+          <label className="text-black    ">
             Reply
           </label>
           {isTrue ? (
@@ -194,14 +194,14 @@ const Commentcard = ({
             ></textarea>
 
             {issending ? (
-              <label className="border-2 border-black text-center p-1 bg-gray-500 text--black font-heading rounded-md">
+              <label className="border-2 border-black text-center p-1 bg-purple-600 text-white rounded-md">
                 sending..
               </label>
             ) : (
               <button
                 onClick={sendReply}
                 id={comment._id}
-                className="border-2 font-heading font-bold border-black text-center w-[20%] bg-slate-500 text-black rounded-md"
+                className="border-2 hover:translate-x-1 mt-1 transition-all ease-in-out  border-black text-center w-[20%] bg-purple-600 text-white rounded-md"
               >
                 send
               </button>

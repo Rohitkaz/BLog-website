@@ -9,8 +9,10 @@ import { redirect } from "react-router-dom";
 const Register = () => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
+  const [error,setError]=useState();
   const navigate = useNavigate();
-  const Register = async () => {
+  const Register = async (e) => {
+    e.preventDefault();
     console.log("hi");
     try {
       const result = await axios.post("http://localhost:8000/Auth/register", {
@@ -19,10 +21,10 @@ const Register = () => {
       });
       console.log(result.status);
 
-      if (result.status == 200 || result.status == 409)
+      
         return navigate("/Login");
     } catch (err) {
-      alert(err.response.data);
+      setError(err.response.data);
     }
   };
   return (
@@ -33,7 +35,7 @@ const Register = () => {
           <div className="w-full border-b-2 border-gray-500 mt-[10px] font-sans text-lg  p-4 font-bold text-center ">
             WELCOME BACK!
           </div>
-          <div className="flex flex-col mt-[50px] gap-5 justify-center items-center   ">
+          <form onSubmit={Register} className="flex flex-col mt-[50px] gap-5 justify-center items-center   ">
             <input
               name={name}
               onChange={(e) => {
@@ -42,7 +44,7 @@ const Register = () => {
               type="text"
               placeholder="Name"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2"
-            ></input>
+           required ></input>
             <input
               name={password}
               onChange={(e) => {
@@ -51,14 +53,14 @@ const Register = () => {
               type="password"
               placeholder="Password"
               className="  border-green border-2  w-3/4 md:h-[40px] pl-2 "
-            ></input>
+            required></input>
             <button
-              onClick={Register}
+              type="submit"
               className=" border-none bg-blue-800 mt-5 h-[50px] text-center pt-2 w-3/4 text-white hover:bg-teal-500 hover:text-blue-900 "
             >
               REGISTER
             </button>
-          </div>
+          </form>
 
           <div className=" border-gray-500 border-t-2 mt-10 flex flex-row justify-between md:p-5 p-1">
             <div className="text-blue-600 font-heading hover:text-green-500">
@@ -66,6 +68,7 @@ const Register = () => {
             </div>
             <div>forgot Password?</div>
           </div>
+          <h1 className=" text-red-600 text-center  ">{error}</h1>
         </div>
       </div>
     </>
